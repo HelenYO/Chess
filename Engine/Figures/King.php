@@ -4,7 +4,9 @@ namespace Engine\Figures;
 
 use Engine\Figure;
 
-class Rook extends Figure
+class King extends Figure
 {
   var $has_moved = false;
+
+
 }
