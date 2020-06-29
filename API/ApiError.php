@@ -20,7 +20,7 @@ class ApiError
     self::ERROR_GAME_ALREADY_STARTED => 'game_already_started',
     self::ERROR_GAME_ALREADY_FINISHED => 'game_already_finished',
     self::ERROR_ILLEGAL_MOVE => 'illegal_move',
-    self::ERROR_DB_FAIL => 'internal_er',
+    self::ERROR_DB_FAIL => 'internal_error',
   ];
 
   public static function getErrorCodeDescription($error_code)

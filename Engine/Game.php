@@ -1,15 +1,15 @@
 <?php
 
-use Engine\Cell;
-use Engine\Color;
-use Engine\Status;
-use Engine\Chessboard;
-use Engine\Figures\Rook;
-use Engine\Figures\Queen;
-use Engine\Figures\Pawn;
-use Engine\Figures\Knight;
-use Engine\Figures\King;
-use Engine\Figures\Bishop;
+require_once "Cell.php";
+require_once "Color.php";
+require_once "Status.php";
+require_once "Chessboard.php";
+require_once "Figures/Rook.php";
+require_once "Figures/Queen.php";
+require_once "Figures/Pawn.php";
+require_once "Figures/Knight.php";
+require_once "Figures/King.php";
+require_once "Figures/Bishop.php";
 
 class Game
 {
@@ -21,19 +21,32 @@ class Game
   var $id_second;
   var $is_king_under_attack; //todo:: пропихнуть везде эту проверку, чтобы спасать короля, еще для рокировки понадобится
 
-  public function __construct()
+  //todo::сделать инфу кто победил
+
+  public function __construct($user_id1, $user_id2)
   {
     $this->board = new Chessboard();
     $this->is_king_under_attack = false;
+    $this->id_first = $user_id1;
+    $this->id_second = $user_id2;
+    $this->startGame();
   }
 
-  public function startGame()
+  private function startGame() //todo::
   {
     $this->board->init();
     $this->status = Status::STARTED;
     $this->turn = Color::WHITE;
   }
 
+  /**
+   * @param $id
+   * @param $x1
+   * @param $y1
+   * @param $x2
+   * @param $y2
+   * @return ApiResult
+   */
   public function makeMove($id, $x1, $y1, $x2, $y2)
   {
     //проверка, что это вообще в поле
@@ -55,6 +68,18 @@ class Game
     return $this->status;
   }
 
+  public function toArray()
+  {
+    return [
+      'board' => $this->board->toArray(),
+      'moves' => $this->moves,
+      'status' => $this->status,
+      'turn' => $this->turn,
+      'first_player' => $this->id_first,
+      'second_player' => $this->id_first
+    ];
+  }
+
   private function checkMove($x1, $y1, $x2, $y2)
   {
     $from = new Cell($x1, $y1);
@@ -62,17 +87,17 @@ class Game
     $move = new Move($from, $to);
     $figure = $this->board[$x1][$y1];
     //проверка, что фигура вообще так ходит
-    if (!checkRule()) {
+    if (!$this->checkRule($x1, $y1, $x2, $y2)) {
       return error;
     }
     //проверка, что на этом пути фигуре ничего не мешало
-    if (!checkPath()) {
+    if (!$this->checkPath($x1, $y1, $x2, $y2)) {
       return error;
     }
     //проверка на экстра-условия типа шаха
-    if (!checkExtra()) {
-      return error;
-    }
+//    if (!checkExtra()) {//todo::do it
+//      return error;
+//    }
     return true;
   }
 
@@ -84,9 +109,9 @@ class Game
     $this->moves[] = $move;
     $this->changeTurn();
     $this->changeIsKingUnderAttack();
-    if ($this->isFinal($move)) {
-      $this->changeStatus();
-    }
+//    if ($this->isFinal($move)) {//todo::check final turn
+//      $this->changeStatus();
+//    }
   }
 
   private function changeTurn()
@@ -115,5 +140,27 @@ class Game
     $to = new Cell($x2, $y2);
     $move = new Move($from, $to);
     $figure = $this->board[$x1][$y1];
+    if (!$figure->checkRule($x1, $y1, $x2, $y2)) {
+      if ($figure instanceof Pawn) {
+        if ((abs($x2 - $x1) == 1) && ($y1 + 1 == $y2) && ($this->board[$x2][$y2])) {
+          return true;
+        }
+      }
+      return error;
+    }
+    return true;
+  }
+
+  private function checkPath($x1, $y1, $x2, $y2)
+  {
+    $from = new Cell($x1, $y1);
+    $to = new Cell($x2, $y2);
+    $move = new Move($from, $to);
+    $figure = $this->board[$x1][$y1];
+    if ($figure->checkPath($this->board, $x1, $y1, $x2, $y2)) {
+      return true;
+    } else {
+      return error;
+    }
   }
 }

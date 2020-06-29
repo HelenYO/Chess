@@ -2,7 +2,7 @@
 
 namespace Engine;
 
-class Figure
+abstract class Figure
 {
   var $name;
   var $color;
@@ -12,8 +12,17 @@ class Figure
     $this->color = $c;
   }
 
-  public function checkPath($move)
-  {
+  abstract public function checkRule($x1, $y1, $x2, $y2);
 
-  }
+  abstract public function checkPath($b, $x1, $y1, $x2, $y2);
+
+  abstract public function toArray();
+
+//  public function toArray()
+//  {
+//    return [
+//      'name' => $this->name,
+//      'color' => $this->color
+//    ];
+//  }
 }

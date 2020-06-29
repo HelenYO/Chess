@@ -62,6 +62,10 @@ class DB
     return self::writeValue(self::getUserToGameIdKey($user_id), $game_id);
   }
 
+  /**
+   * @param int $game_id
+   * @return Game|null
+   */
   public static function getGame(int $game_id)
   {
     return unserialize(self::readValue(self::getGameKey($game_id)));

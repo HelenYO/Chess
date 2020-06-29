@@ -44,6 +44,11 @@ class ApiResult
     return new ApiResult(null, $error_code, $message);
   }
 
+  public function isSuccess()
+  {
+    return $this->error_code === null;
+  }
+
   public function toJson()
   {
     $response = [];

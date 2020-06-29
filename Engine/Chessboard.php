@@ -50,4 +50,16 @@ class Chessboard
     $this->board[6][7] = new Knight(Color::WHITE);
     $this->board[7][7] = new Rook(Color::WHITE);
   }
+
+  public function toArray()
+  {
+
+    $board_array = [];
+    for ($i = 0; $i < 8; $i++) {
+      for ($j = 0; $j < 8; $j++) {
+        $board_array[$i][$j] = $this->board[$i][$j] ? $this->board[$i][$j]->toArray() : ' ';
+      }
+    }
+    return ['chessboard' => $board_array];
+  }
 }
