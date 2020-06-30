@@ -1,7 +1,5 @@
 <?php
 
-use Engine\Cell;
-
 class Move
 {
   var $from;

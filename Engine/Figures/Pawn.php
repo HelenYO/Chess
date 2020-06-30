@@ -1,5 +1,7 @@
 <?php
 
+use Engine\Color;
+
 require_once "../Engine/Figure.php";
 
 class Pawn extends Figure
@@ -21,7 +23,7 @@ class Pawn extends Figure
   public function checkPath($b, $x1, $y1, $x2, $y2)
   {
     if ($x1 == $x2) {
-      if ($b->board[$x2][$y1]->color == \Engine\Color::WHITE) {
+      if ($b->board[$x2][$y1]->color == Color::WHITE) {
         for ($i = $x1 + 1; $i < $x2 + 1; $i++) {
           if ($b->board[$x2][$i]) {
             return false;
@@ -39,8 +41,8 @@ class Pawn extends Figure
       if (!($figure && ($figure->color != ($b->board[$x1][$y1]->color)))) {
         return false;
       }
-      if (!((($figure->color == \Engine\Color::BLACK) && (abs($x1 - $x2) == 1) && ($y2 == $y1 + 1)) ||
-        (($figure->color == \Engine\Color::WHITE) && (abs($x1 - $x2) == 1) && ($y2 == $y1 - 1)))) {
+      if (!((($figure->color == Color::BLACK) && (abs($x1 - $x2) == 1) && ($y2 == $y1 + 1)) ||
+        (($figure->color == Color::WHITE) && (abs($x1 - $x2) == 1) && ($y2 == $y1 - 1)))) {
         return false;
       }
     }

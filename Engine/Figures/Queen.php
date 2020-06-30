@@ -19,62 +19,19 @@ class Queen extends Figure
   public function checkPath($b, $x1, $y1, $x2, $y2)
   {
     if ($x1 + $y1 == $x2 + $y2) {
-      if ($x2 > $x1) {
-        for ($i = $x1 + 1; $i < $x2; $i++) {
-          if ($b->board[$i][$x1 + $y1 - $i]) {
-            return false;
-          }
-        }
-      } else {
-        for ($i = $x1 - 1; $i > $x2; $i--) {
-          if ($b->board[$i][$x1 + $y1 - $i]) {
-            return false;
-          }
-        }
+      if (!Figure::checkDiagonalUpDown($b, $x1, $y1, $x2, $y2)) {
+        return false;
       }
     } else if (8 - $x1 + $y1 == 8 - $x2 + $y2) {
-      if ($x2 > $x1) {
-        for ($i = $x1 + 1; $i < $x2; $i++) {
-          if ($b->board[$i][$i - $x1 + $y1]) {
-            return false;
-          }
-        }
-      } else {
-        for ($i = $x1 - 1; $i > $x2; $i--) {
-          if ($b->board[$i][$i - $x1 + $y1]) {
-            return false;
-          }
-        }
-      }
-    } else if ($x1 == $x2) {
-      if ($y1 < $y2) {
-        for ($i = $y1 + 1; $i < $y2; $i++) {
-          if ($b->board[$x1][$i]) {
-            return false;
-          }
-        }
-      } else {
-        for ($i = $y1 - 1; $i > $y2; $i--) {
-          if ($b->board[$x1][$i]) {
-            return false;
-          }
-        }
+      if (!Figure::checkDiagonalDownUp($b, $x1, $y1, $x2, $y2)) {
+        return false;
       }
     } else {
-      if ($x1 < $x2) {
-        for ($i = $x1 + 1; $i < $x2; $i++) {
-          if ($b->board[$i][$y1]) {
-            return false;
-          }
-        }
-      } else {
-        for ($i = $x1 - 1; $i > $x2; $i--) {
-          if ($b->board[$i][$y1]) {
-            return false;
-          }
-        }
+      if (!Figure::checkVerticalHorizontal($b, $x1, $y1, $x2, $y2)) {
+        return false;
       }
     }
+
     //проверка что ты либо втсал на пустое, либо съел
     $figure = $b->board[$x2][$y2];
     return !$figure || ($figure->color != $b->board[$x1][$y1]->color);
