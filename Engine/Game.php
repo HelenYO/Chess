@@ -30,8 +30,8 @@ class Game
   var $id_first;
   var $id_second;
   var $is_king_under_attack; //todo:: пропихнуть везде эту проверку, чтобы спасать короля, еще для рокировки понадобится
-
-  //todo::сделать инфу кто победил
+//возможно, нам это и не надо - просто попробуем применить и посмотрим, под атакой ли король
+//todo::троекратное повторение ходов
 
   public function __construct($user_id1, $user_id2)
   {
@@ -135,10 +135,10 @@ class Game
     if (!$this->checkPath($x1, $y1, $x2, $y2)) {
       return false;
     }
-    //проверка на экстра-условия типа шаха
-//    if (!checkExtra()) {//todo::do it
-//      return error;
-//    }
+    //проверка на экстра-условия (шаха)
+    if (!$this->checkExtra($x1, $y1, $x2, $y2)) {
+      return false;
+    }
     return true;
   }
 
@@ -161,6 +161,30 @@ class Game
 //    if ($this->isFinal($move)) {//todo::check final turn
 //      $this->changeStatus();
 //    }
+  }
+
+  //здесь проверяем, что король будет не под шахом
+  private function checkExtra($x1, $y1, $x2, $y2)
+  {
+    $board_temp = clone $this->board;
+    $c = $board_temp->board[$x1][$y1]->color;
+    $board_temp->board[$x2][$y2] = $board_temp->board[$x1][$y1];
+    $board_temp->board[$x1][$y1] = null;
+    $pos = $this->findPositionOfKing($c, $board_temp);//таким образом даже если был ход короля, то все ок
+    return !$this->checkCheck($board_temp, $pos[0], $pos[1], $c);
+    //return true;
+  }
+
+  private function findPositionOfKing($c, $b)
+  {
+    for ($i = 0; $i < 8; $i++) {
+      for ($j = 0; $j < 8; $j++) {
+        $cell = $b->board[$i][$j];
+        if ($cell && ($cell instanceof King) && $cell->color == $c) {
+          return [$i, $j];
+        }
+      }
+    }
   }
 
   private function changeTurn()
@@ -217,5 +241,37 @@ class Game
     } else {
       return false;
     }
+  }
+
+  //когда проверяешь, надо самого короля с поля убрать(он может заслонять)
+  public function checkCellAttack($b, $x, $y, $c)
+  {//color who are being attacked
+    $mayAttack = [];
+    for ($i = 0; $i < 8; $i++) {
+      for ($j = 0; $j < 8; $j++) {
+        $cell = $b->board[$i][$j];
+        if (($i == $x) && ($j == $y)) {
+          continue;
+        }
+        if (!$cell) {
+          continue;
+        }
+        if ($cell->color == $c) {
+          continue;
+        }
+        if (!$this->checkMove($i, $j, $x, $y)) {
+          continue;
+        }
+        $mayAttack[] = $cell;
+      }
+    }
+    return $mayAttack;
+  }
+
+  public function checkCheck($b, $x, $y, $c)
+  {//true - under attack
+    $mayAttack = Game::checkCellAttack($b, $x, $y, $c);
+    $size = sizeof($mayAttack);
+    return ($size != 0);
   }
 }

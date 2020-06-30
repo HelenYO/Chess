@@ -23,14 +23,14 @@ class Pawn extends Figure
   public function checkPath($b, $x1, $y1, $x2, $y2)
   {
     if ($x1 == $x2) {
-      if ($b->board[$x2][$y1]->color == Color::WHITE) {
-        for ($i = $x1 + 1; $i < $x2 + 1; $i++) {
+      if ($b->board[$x1][$y1]->color == Color::WHITE) {
+        for ($i = $y1 + 1; $i < $y2 + 1; $i++) {
           if ($b->board[$x2][$i]) {
             return false;
           }
         }
       } else {
-        for ($i = $x1 - 1; $i > $x2 - 1; $i--) {
+        for ($i = $y1 - 1; $i > $y2 - 1; $i--) {
           if ($b->board[$x2][$i]) {
             return false;
           }
