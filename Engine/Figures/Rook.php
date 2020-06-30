@@ -1,10 +1,9 @@
 <?php
 
-namespace Engine\Figures;
+//set_include_path(get_include_path() .  "");
 
-use Engine\Figure;
+require_once "../Engine/Figure.php";
 
-require_once "../Figure.php";
 
 class Rook extends Figure
 {
@@ -20,13 +19,13 @@ class Rook extends Figure
     if ($x1 == $x2) {
       if ($y1 < $y2) {
         for ($i = $y1 + 1; $i < $y2; $i++) {
-          if ($b[$x1][$i]) {
+          if ($b->board[$x1][$i]) {
             return false;
           }
         }
       } else {
         for ($i = $y1 - 1; $i > $y2; $i--) {
-          if ($b[$x1][$i]) {
+          if ($b->board[$x1][$i]) {
             return false;
           }
         }
@@ -34,27 +33,27 @@ class Rook extends Figure
     } else {
       if ($x1 < $x2) {
         for ($i = $x1 + 1; $i < $x2; $i++) {
-          if ($b[$i][$y1]) {
+          if ($b->board[$i][$y1]) {
             return false;
           }
         }
       } else {
         for ($i = $x1 - 1; $i > $x2; $i--) {
-          if ($b[$i][$y1]) {
+          if ($b->board[$i][$y1]) {
             return false;
           }
         }
       }
     }
-    $figure = $b[$x2][$y2];
-    return !$figure || $figure->color != $b[$x1][$y1]->color;
+    $figure = $b->board[$x2][$y2];
+    return !$figure || $figure->color != $b->board[$x1][$y1]->color;
   }
 
   public function toArray()
   {
     return [
       'name' => 'rook',
-      'color' => $this->color
+      'color' => $this->color == \Engine\Color::WHITE ? 'white' : 'black'
     ];
   }
 }

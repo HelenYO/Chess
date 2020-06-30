@@ -1,8 +1,8 @@
 <?php
 
-namespace Engine\Figures;
+use Engine\Color;
 
-use Engine\Figure;
+require_once "../Engine/Figure.php";
 
 class Bishop extends Figure
 {
@@ -17,13 +17,13 @@ class Bishop extends Figure
     if ($x1 + $y1 == $x2 + $y2) {
       if ($x2 > $x1) {
         for ($i = $x1 + 1; $i < $x2; $i++) {
-          if ($b[$i][$x1 + $y1 - $i]) {
+          if ($b->board[$i][$x1 + $y1 - $i]) {
             return false;
           }
         }
       } else {
         for ($i = $x1 - 1; $i > $x2; $i--) {
-          if ($b[$i][$x1 + $y1 - $i]) {
+          if ($b->board[$i][$x1 + $y1 - $i]) {
             return false;
           }
         }
@@ -31,28 +31,28 @@ class Bishop extends Figure
     } else {
       if ($x2 > $x1) {
         for ($i = $x1 + 1; $i < $x2; $i++) {
-          if ($b[$i][$i - $x1 + $y1]) {
+          if ($b->board[$i][$i - $x1 + $y1]) {
             return false;
           }
         }
       } else {
         for ($i = $x1 - 1; $i > $x2; $i--) {
-          if ($b[$i][$i - $x1 + $y1]) {
+          if ($b->board[$i][$i - $x1 + $y1]) {
             return false;
           }
         }
       }
     }
     //проверка что ты либо втсал на пустое, либо съел
-    $figure = $b[$x2][$y2];
-    return !$figure || $figure->color != $b[$x1][$y1]->color;
+    $figure = $b->board[$x2][$y2];
+    return !$figure || $figure->color != $b->board[$x1][$y1]->color;
   }
 
   public function toArray()
   {
     return [
       'name' => 'bishop',
-      'color' => $this->color
+      'color' => $this->color == Color::WHITE ? 'white' : 'black'
     ];
   }
 }

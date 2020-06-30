@@ -1,8 +1,6 @@
 <?php
 
-namespace Engine\Figures;
-
-use Engine\Figure;
+require_once "../Engine/Figure.php";
 
 class King extends Figure
 {
@@ -18,18 +16,18 @@ class King extends Figure
 
   public function checkPath($b, $x1, $y1, $x2, $y2)
   {
-//todo::проверить, что король не идет на битое поле
+    //todo::проверить, что король не идет на битое поле
     //проверить для каждого поля что оно не бьет
     //надо удалить короля и чекать
-    $figure = $b[$x2][$y2];
-    return !$figure || $figure->color != $b[$x1][$y1]->color;
+    $figure = $b->board[$x2][$y2];
+    return !$figure || $figure->color != $b->board[$x1][$y1]->color;
   }
 
   public function toArray()
   {
     return [
       'name' => 'king',
-      'color' => $this->color
+      'color' => $this->color == \Engine\Color::WHITE ? 'white' : 'black'
     ];
   }
 }
