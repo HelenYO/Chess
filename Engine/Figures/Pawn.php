@@ -5,6 +5,12 @@ require_once "../Engine/Figure.php";
 class Pawn extends Figure
 {
 
+  public function __construct($c)
+  {
+    parent::__construct($c);
+    $this->name = 'pawn';
+  }
+
   public function checkRule($x1, $y1, $x2, $y2)
   {
     return ($x1 == $x2 && (abs($y2 - $y1) == 1 || ($y2 == $y1 + 2 && $y1 == 1) || ($y2 == $y1 - 2 && $y1 == 6)))
@@ -41,13 +47,5 @@ class Pawn extends Figure
     return true;
     //todo::добавить превращение пешки в любую другую фигуру
     //todo::добавить взятие на проходе
-  }
-
-  public function toArray()
-  {
-    return [
-      'name' => 'pawn',
-      'color' => $this->color == \Engine\Color::WHITE ? 'white' : 'black'
-    ];
   }
 }

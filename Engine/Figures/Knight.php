@@ -5,6 +5,12 @@ require_once "../Engine/Figure.php";
 class Knight extends Figure
 {
 
+  public function __construct($c)
+  {
+    parent::__construct($c);
+    $this->name = 'knight';
+  }
+
   public function checkRule($x1, $y1, $x2, $y2)
   {
     return (abs($x1 - $x2) == 2 && abs($y1 - $y2) == 1)
@@ -15,13 +21,5 @@ class Knight extends Figure
   {
     $figure = $b->board[$x2][$y2];
     return !$figure || $figure->color != $b->board[$x1][$y1]->color;
-  }
-
-  public function toArray()
-  {
-    return [
-      'name' => 'knight',
-      'color' => $this->color == \Engine\Color::WHITE ? 'white' : 'black'
-    ];
   }
 }

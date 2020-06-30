@@ -15,5 +15,11 @@ abstract class Figure
 
   abstract public function checkPath($b, $x1, $y1, $x2, $y2);
 
-  abstract public function toArray();
+  public function toArray()
+  {
+    return [
+      'name' => $this->name,
+      'color' => $this->color == \Engine\Color::WHITE ? 'white' : 'black'
+    ];
+  }
 }

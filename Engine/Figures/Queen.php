@@ -4,6 +4,11 @@ require_once "../Engine/Figure.php";
 
 class Queen extends Figure
 {
+  public function __construct($c)
+  {
+    parent::__construct($c);
+    $this->name = 'queen';
+  }
 
   public function checkRule($x1, $y1, $x2, $y2)
   {
@@ -73,13 +78,5 @@ class Queen extends Figure
     //проверка что ты либо втсал на пустое, либо съел
     $figure = $b->board[$x2][$y2];
     return !$figure || ($figure->color != $b->board[$x1][$y1]->color);
-  }
-
-  public function toArray()
-  {
-    return [
-      'name' => 'queen',
-      'color' => $this->color == \Engine\Color::WHITE ? 'white' : 'black'
-    ];
   }
 }

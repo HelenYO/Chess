@@ -6,6 +6,11 @@ class King extends Figure
 {
   var $has_moved = false;//todo::использовать в рокировке
 
+  public function __construct($c)
+  {
+    parent::__construct($c);
+    $this->name = 'king';
+  }
 
   public function checkRule($x1, $y1, $x2, $y2)
   {
@@ -21,13 +26,5 @@ class King extends Figure
     //надо удалить короля и чекать
     $figure = $b->board[$x2][$y2];
     return !$figure || $figure->color != $b->board[$x1][$y1]->color;
-  }
-
-  public function toArray()
-  {
-    return [
-      'name' => 'king',
-      'color' => $this->color == \Engine\Color::WHITE ? 'white' : 'black'
-    ];
   }
 }

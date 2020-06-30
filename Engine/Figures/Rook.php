@@ -9,6 +9,12 @@ class Rook extends Figure
 {
   var $has_moved = false;
 
+  public function __construct($c)
+  {
+    parent::__construct($c);
+    $this->name = 'rook';
+  }
+
   public function checkRule($x1, $y1, $x2, $y2)
   {
     return ($x1 == $x2 && $y1 != $y2) || ($x1 != $x2 && $y1 == $y2);
@@ -47,13 +53,5 @@ class Rook extends Figure
     }
     $figure = $b->board[$x2][$y2];
     return !$figure || $figure->color != $b->board[$x1][$y1]->color;
-  }
-
-  public function toArray()
-  {
-    return [
-      'name' => 'rook',
-      'color' => $this->color == \Engine\Color::WHITE ? 'white' : 'black'
-    ];
   }
 }
